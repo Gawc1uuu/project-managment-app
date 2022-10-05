@@ -1,0 +1,23 @@
+.users-sidebar {
+  width: 100vw;
+  height: 100vh;
+  width: 250px;
+  background-color: #e9eaeb;
+  box-sizing: border-box;
+  position: relative;
+  color: black;
+  text-align: center;
+}
+.users-sidebar p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.users-content {
+  position: fixed;
+  width: inherit;
+}
+.users {
+  text-align: right;
+  margin-right: 40px;
+  margin-top: 40px;
+}

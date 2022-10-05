@@ -1,23 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
+
+//pages components
+import Dashboard from "./pages/dashboard/Dashboard";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
+import Project from "./pages/project/Project";
+import Create from "./pages/create/CreateProject";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+//styles
+import "./App.css";
+import AllUsers from "./components/AllUsers";
 
 function App() {
+  const { user } = useAuthContext();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Sidebar />
+        <div className="container">
+          <Navbar />
+          <Routes>
+            {user && <Route path="/" element={<Dashboard />} />}
+            {!user && <Route path="/" element={<Navigate to="/login" />} />}
+
+            {!user && <Route path="/login" element={<Login />} />}
+            {user && <Route path="/login" element={<Navigate to="/" />} />}
+
+            {!user && <Route path="/signup" element={<Signup />} />}
+            {user && <Route path="/signup" element={<Navigate to="/" />} />}
+
+            {user && <Route path="/projects/:id" element={<Project />} />}
+            {!user && (
+              <Route path="/projects/:id" element={<Navigate to="/login" />} />
+            )}
+
+            {user && <Route path="/create" element={<Create />} />}
+            {!user && (
+              <Route path="/create" element={<Navigate to="/login" />} />
+            )}
+          </Routes>
+        </div>
+        <AllUsers />
+      </BrowserRouter>
     </div>
   );
 }

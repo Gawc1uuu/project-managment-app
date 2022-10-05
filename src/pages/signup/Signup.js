@@ -8,11 +8,33 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [avatarError, setAvatarError] = useState(null);
   const { signup, isPending, error } = useSignup();
+
+  const handleFileChange = (e) => {
+    setAvatar(null);
+    let selected = e.target.files[0];
+    if (!selected) {
+      setAvatarError("Please choose an avatar!");
+      return;
+    }
+    if (!selected.type.includes("image")) {
+      setAvatarError("Avatar must be an image!");
+      return;
+    }
+    if (selected.size > 100000) {
+      setAvatarError("Image too large! must be less than 100kb");
+      return;
+    }
+    setAvatarError(null);
+    setAvatar(selected);
+    console.log("avatar updated");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup(email, password, displayName);
+    signup(email, password, displayName, avatar);
   };
 
   return (
@@ -43,13 +65,14 @@ const Signup = () => {
             placeholder="password"
           />
         </label>
-        {/* <label>
-          <input type="file" />
+        <label>
+          <input type="file" onChange={handleFileChange} />
           <span>Add a avatar</span>
-        </label> */}
+        </label>
         {isPending && <button className="auth-button">signing up...</button>}
         {!isPending && <button className="auth-button">Sign up</button>}
         {error && <p className="error">{error}</p>}
+        {avatarError && <p className="error">{avatarError}</p>}
       </form>
     </div>
   );

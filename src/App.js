@@ -14,36 +14,41 @@ import "./App.css";
 import AllUsers from "./components/AllUsers";
 
 function App() {
-  const { user } = useAuthContext();
+  const { user, auth_is_ready } = useAuthContext();
   return (
     <div className="App">
-      <BrowserRouter>
-        <Sidebar />
-        <div className="container">
-          <Navbar />
-          <Routes>
-            {user && <Route path="/" element={<Dashboard />} />}
-            {!user && <Route path="/" element={<Navigate to="/login" />} />}
+      {auth_is_ready && (
+        <BrowserRouter>
+          <Sidebar />
+          <div className="container">
+            <Navbar />
+            <Routes>
+              {user && <Route path="/" element={<Dashboard />} />}
+              {!user && <Route path="/" element={<Navigate to="/login" />} />}
 
-            {!user && <Route path="/login" element={<Login />} />}
-            {user && <Route path="/login" element={<Navigate to="/" />} />}
+              {!user && <Route path="/login" element={<Login />} />}
+              {user && <Route path="/login" element={<Navigate to="/" />} />}
 
-            {!user && <Route path="/signup" element={<Signup />} />}
-            {user && <Route path="/signup" element={<Navigate to="/" />} />}
+              {!user && <Route path="/signup" element={<Signup />} />}
+              {user && <Route path="/signup" element={<Navigate to="/" />} />}
 
-            {user && <Route path="/projects/:id" element={<Project />} />}
-            {!user && (
-              <Route path="/projects/:id" element={<Navigate to="/login" />} />
-            )}
+              {user && <Route path="/projects/:id" element={<Project />} />}
+              {!user && (
+                <Route
+                  path="/projects/:id"
+                  element={<Navigate to="/login" />}
+                />
+              )}
 
-            {user && <Route path="/create" element={<Create />} />}
-            {!user && (
-              <Route path="/create" element={<Navigate to="/login" />} />
-            )}
-          </Routes>
-        </div>
-        <AllUsers />
-      </BrowserRouter>
+              {user && <Route path="/create" element={<Create />} />}
+              {!user && (
+                <Route path="/create" element={<Navigate to="/login" />} />
+              )}
+            </Routes>
+          </div>
+          <AllUsers />
+        </BrowserRouter>
+      )}
     </div>
   );
 }

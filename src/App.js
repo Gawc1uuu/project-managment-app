@@ -19,7 +19,8 @@ function App() {
     <div className="App">
       {auth_is_ready && (
         <BrowserRouter>
-          <Sidebar />
+          {user && <Sidebar />}
+
           <div className="container">
             <Navbar />
             <Routes>
@@ -46,7 +47,7 @@ function App() {
               )}
             </Routes>
           </div>
-          <AllUsers />
+          {user && <AllUsers />}
         </BrowserRouter>
       )}
     </div>

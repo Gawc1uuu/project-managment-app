@@ -1,17 +1,26 @@
 import React from "react";
 import "./AllUsers.css";
+import { useCollection } from "../hooks/useCollection";
 
 function AllUsers() {
+  const { documents, error } = useCollection("users");
   return (
     <div className="users-sidebar">
       <div className="users-content">
         <div className="header">
-          <p>All users</p>
+          <h2>All users</h2>
         </div>
         <nav className="users">
+          {error && <p className="error">{error}</p>}
           <ul>
-            <li>gawcio</li>
-            <li>ada</li>
+            {documents &&
+              documents.map((doc) => (
+                <li key={doc.id}>
+                  {doc.online && <span className="online"></span>}
+                  {doc.displayName}
+                  <img className="avatar" src={doc.photoURL} />
+                </li>
+              ))}
           </ul>
         </nav>
       </div>

@@ -1,0 +1,59 @@
+.project-list {
+  margin-top: 40px;
+  overflow-y: auto;
+  max-height: 500px;
+  word-wrap: break-word;
+
+  /* display: flex;
+  flex-wrap: wrap;
+  margin: 0; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 20px;
+}
+.project-list a {
+  background-color: white;
+  min-width: 300px;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: black;
+  margin: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  transition: transform 0.2s ease;
+}
+.project-list a:hover {
+  transform: translateY(-3px);
+  transition: transform 0.2s ease;
+}
+.project-list h4 {
+  font-size: 1.2rem;
+}
+.project-list p {
+  color: rgb(177, 173, 173);
+  font-size: 0.7rem;
+}
+.project-list .desc {
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.project-list .assigned-to {
+  margin-top: 20px;
+}
+
+.project-list .assigned-to ul {
+  display: flex;
+  justify-content: flex-start;
+}
+.project-list .assigned-to ul li {
+  margin: 0 5px;
+}
+.assigned-user-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

@@ -1,5 +1,5 @@
 .sidebar {
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
   width: 250px;
   background-color: #2f4050;
@@ -20,7 +20,7 @@
 }
 .sidebar .links {
   margin-top: 50px;
-  margin-left: 20px;
+  margin-left: 40px;
 }
 .sidebar .links li {
   margin-top: 10px;
@@ -33,6 +33,7 @@
   color: white;
   box-sizing: border-box;
   align-items: center;
+  overflow: hidden;
 }
 .sidebar .links img {
   margin-right: 10px;

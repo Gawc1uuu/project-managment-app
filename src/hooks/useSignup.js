@@ -4,12 +4,10 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
-import { async } from "@firebase/util";
 
 export const useSignup = () => {
   const [isPending, setIsPending] = useState();
   const [error, setError] = useState();
-  const [imgUrl, setImgUrl] = useState(null);
   const { dispatch } = useAuthContext();
 
   const signup = async (email, password, displayName, photo) => {

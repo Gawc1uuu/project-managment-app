@@ -1,6 +1,12 @@
 import { useReducer } from "react";
 import { db } from "../firebase/config";
-import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 const initialState = {
   document: null,
@@ -22,7 +28,7 @@ const firestoreReducer = (state, action) => {
       };
     case "DELETED_DOCUMENT":
       return {
-        document: action.payload,
+        document: null,
         isPending: false,
         success: true,
         error: null,
@@ -34,19 +40,21 @@ const firestoreReducer = (state, action) => {
         success: false,
         error: action.payload,
       };
+    default:
+      return { ...state };
   }
 };
 
 export const useFirestore = (col) => {
   const [state, dispatch] = useReducer(firestoreReducer, initialState);
 
-  const ref = collection(db, col);
-  const addDocument = async (d) => {
+  const addDocument = async (data) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
-      const addedDocument = await addDoc(ref, d);
+      const addedDocument = await addDoc(collection(db, col), data);
       dispatch({ type: "ADDED_DOCUMENT", document: addedDocument });
+      console.log("ADDED!");
     } catch (err) {
       dispatch({ type: "ERROR", error: err.message });
     }
@@ -57,6 +65,24 @@ export const useFirestore = (col) => {
 
     try {
       await deleteDoc(doc(db, col, id));
-    } catch (err) {}
+      dispatch({ type: "DELETED_DOCUMENT" });
+    } catch (err) {
+      dispatch({ type: "ERROR", error: err.message });
+    }
   };
+
+  const updateDocument = async (id, update) => {
+    dispatch({ type: "IS_PENDING" });
+
+    try {
+      const updatedDocument = await updateDoc(doc(db, col, id), update);
+      dispatch({ type: "UPDATED_DOCUMENT", payload: updatedDocument });
+      console.log("added");
+    } catch (err) {
+      dispatch({ type: "ERROR", error: err.message });
+      console.log(err.message);
+    }
+  };
+
+  return { addDocument, deleteDocument, updateDocument, state };
 };

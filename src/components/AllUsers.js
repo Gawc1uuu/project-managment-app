@@ -18,7 +18,7 @@ function AllUsers() {
                 <li key={doc.id}>
                   {doc.online && <span className="online"></span>}
                   {doc.displayName}
-                  <img className="avatar" src={doc.photoURL} />
+                  <img className="avatar" src={doc.photoURL} alt="user" />
                 </li>
               ))}
           </ul>

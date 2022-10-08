@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
-import { serverTimestamp, Timestamp, fromDate } from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
 import Select from "react-select";
 import { useCollection } from "../../hooks/useCollection";
 import { useAuthContext } from "../../hooks/useAuthContext";
-//styles
-import styles from "./CreateProject.css";
+import { useFirestore } from "../../hooks/useFirestore";
+import { useNavigate } from "react-router-dom";
+
+import "./CreateProject.css";
 
 const categories = [
-  { value: "electricity", label: "electricity" },
+  { value: "electricity", label: "Electricity" },
   { value: "windows", label: "Windows" },
   { value: "construction", label: "Construction" },
-  { value: "plumbing", label: "plumbing" },
+  { value: "plumbing", label: "Plumbing" },
 ];
 
 const CreateProject = () => {
+  const navigate = useNavigate();
+
+  const { addDocument } = useFirestore("projects");
   const { documents } = useCollection("users");
   const [users, setUsers] = useState([]);
   const { user } = useAuthContext();
@@ -21,7 +26,6 @@ const CreateProject = () => {
   useEffect(() => {
     if (documents) {
       const options = documents.map((user) => {
-        console.log(user);
         return { value: user, label: user.displayName };
       });
       setUsers(options);
@@ -30,12 +34,12 @@ const CreateProject = () => {
 
   const [name, setName] = useState();
   const [details, setDetails] = useState();
-  const [dueDate, setDueDate] = useState();
+  // const [dueDate, setDueDate] = useState();
   const [category, setCategory] = useState();
   const [assignedUsers, setAssignedUsers] = useState();
   const [formError, setFormError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setFormError(null);
@@ -57,9 +61,10 @@ const CreateProject = () => {
       return {
         displayName: user.value.displayName,
         photoURL: user.value.photoURL,
-        id: user.value.uid,
+        id: user.value.id,
       };
     });
+    console.log(assignedUsersList);
 
     const project = {
       name,
@@ -71,7 +76,8 @@ const CreateProject = () => {
       assignedUsersList,
     };
 
-    console.log(project);
+    await addDocument(project);
+    navigate("/");
   };
 
   return (
@@ -80,6 +86,7 @@ const CreateProject = () => {
       <form onSubmit={handleSubmit}>
         <label>
           <input
+            required
             type="text"
             placeholder="project name"
             onChange={(e) => setName(e.target.value)}
@@ -87,6 +94,7 @@ const CreateProject = () => {
         </label>
         <label>
           <textarea
+            required
             placeholder="project details"
             onChange={(e) => setDetails(e.target.value)}
           />

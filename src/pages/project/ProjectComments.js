@@ -1,10 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import { arrayUnion, Timestamp } from "firebase/firestore";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 //styles
+import "./Project.css";
 
 const ProjectComments = ({ document }) => {
   const { updateDocument, state } = useFirestore("projects");

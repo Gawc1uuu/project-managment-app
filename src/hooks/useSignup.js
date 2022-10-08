@@ -38,11 +38,15 @@ export const useSignup = () => {
             .catch((err) => {
               console.log(err.message);
             });
-          await setDoc(doc(db, "users", res.user.uid), {
-            online: true,
-            displayName,
-            photoURL: url,
-          });
+          try {
+            await setDoc(doc(db, "users", res.user.uid), {
+              online: true,
+              displayName,
+              photoURL: url,
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
         });
       });
 

@@ -3,18 +3,24 @@ import "./Sidebar.css";
 import HomeIcon from "../assets/home-icon.svg";
 import AddIcon from "../assets/add-icon.svg";
 import { NavLink } from "react-router-dom";
-import UserAvatar from "./UserAvatar";
 import { useAuthContext } from "../hooks/useAuthContext";
+
+import { useDocument } from "../hooks/useDocument";
 
 const Sidebar = () => {
   const { user } = useAuthContext();
+  const { document } = useDocument(user.uid, "users");
   return (
     <div className="sidebar">
-      {user && (
+      {document && (
         <div className="sidebar-content">
           <div className="user">
-            <UserAvatar />
-            <p>Hey, {user.displayName}!</p>
+            <img
+              className="user-avatar"
+              src={document.photoURL}
+              alt="user avatar"
+            />
+            <p>Hey, {document.displayName}!</p>
           </div>
           <nav className="links">
             <ul>

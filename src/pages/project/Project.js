@@ -3,6 +3,7 @@ import ProjectComments from "./ProjectComments";
 import ProjectSummary from "./ProjectSummary";
 import { useDocument } from "../../hooks/useDocument";
 //styles
+import "./Project.css";
 
 const Project = () => {
   const { id } = useParams();
